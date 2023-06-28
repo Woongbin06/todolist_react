@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types'; 
 
 const ToDo = ({ todo, todoList, setTodoList }) => {
+  const [edited, setEdited] = useState(false);
+  const [newText, setNewTest] = useState(todo.text);
+  const editInputRef = useRef(null);
+
   const onChangeCheckbox = () => {
     const nextTodoList = todoList.map((item) => ({
       ...item,
@@ -10,6 +14,30 @@ const ToDo = ({ todo, todoList, setTodoList }) => {
 
     setTodoList(nextTodoList);
   };
+
+  const onClickEditButton = () => {
+    setEdited(true);
+  };
+
+  const onChangeEditInput = (e) => {
+    setNewTest(e.target.value);
+  };
+
+  const onClickSubmitButton = () => {
+    const nextTodoList = todoList.map((item) => ({
+      ...item,
+      text: item.id === todo.id ? newText : item.text, 
+    }));
+    setTodoList(nextTodoList);
+
+    setEdited(false); 
+  };
+
+  useEffect(() => {
+    if (edited) {
+      editInputRef.current.focus();
+    }
+  }, [edited]);
 
   return (
   <li className="todoapp__item">
@@ -21,19 +49,46 @@ const ToDo = ({ todo, todoList, setTodoList }) => {
       onChange={onChangeCheckbox}
     />
     {/* 투두 내용 */}
-    <span 
-      className={`todoapp__item-ctx ${
-        todo.checked ? 'todoapp__item-ctx-checked' : ''
-      }`}
-    >
-      {todo?.text} 
-    </span>
+    {
+      edited ? (
+        <input
+          type="text"
+          className="todoapp__item-edit-input"
+          value={newText}
+          ref={editInputRef}
+          onChange={onChangeEditInput}
+        />
+      ) : (
+        <span
+          className={`todoapp__item-ctx ${
+            todo.checked ? 'todoapp__item-ctx-checked' : ''
+          }`}
+        >
+          {todo?.text} 
+        </span>
+      )
+    }
     {/* 수정 버튼 */}
     {
       !todo.checked ? (
-        <button type="button" className="todoapp__item-edit-btn">
-          ✏
-        </button>
+        edited ? (
+          <button
+            type="button"
+            className="todoapp__item-edit-btn"
+            ref={editInputRef}
+            onClick={onClickSubmitButton}
+          >
+            👌
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="todoapp__item-edit-btn"
+            onClick={onClickEditButton}
+          >
+            ✏
+          </button>
+        )
       ) : null
     }
     {/* 삭제 버튼 */}
