@@ -16,10 +16,16 @@ const Home = () => {
         title={'할 일'}
         todoList={todoList}
         setTodoList={setTodoList}
+        checkedList={false}
       />
 
       {/* 완료한 ToDo 리스트 */}
-      <ToDoList />
+      <ToDoList 
+        title={'완료한 일'}
+        todoList={todoList}
+        setTodoList={setTodoList}
+        checkedList={true}
+      />
     </div>
   );
 };

@@ -2,19 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ToDo from './ToDo';
 
-const ToDoList = ({ title, todoList, setTodoList }) => (
+const ToDoList = ({ title, todoList, setTodoList, checkedList }) => (
   <div className="todoapp__list">
     <p className="todoapp__list-tit">{title}</p>
     <ul className="todoapp__list-ul">
       {todoList && 
-        todoList.map((todo) => (
-          <ToDo
-            key={todo.id}
-            todo={todo}
-            todoList={todoList}
-            setTodoList={setTodoList}
-          />
-        ))}
+        todoList.map((todo) => {
+          if (checkedList !== todo.checked) return null;
+          
+          return (
+            <ToDo
+              key={todo.id}
+              todo={todo}
+              todoList={todoList}
+              setTodoList={setTodoList}
+            />
+          );
+        })}
     </ul>
   </div>
 );
@@ -28,6 +32,7 @@ ToDoList.propTypes = {
     })
   ),
   setTodoList: PropTypes.func.isRequired,
+  checkedList: PropTypes.bool.isRequired,
 };
 
 export default ToDoList;
