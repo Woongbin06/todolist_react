@@ -8,13 +8,17 @@ const Home = () => {
 
   return (
     <div className="homepage__container">
-      {/* ToDo를 추가할 수 있는 input 박스 */}
+      {/* input box */}
       <InputBox todoList={todoList} setTodoList={setTodoList}/>
 
       {/* 할 일 ToDo 리스트 */}
-      <ToDoList />
+      <ToDoList 
+        title={'할 일'}
+        todoList={todoList}
+        setTodoList={setTodoList}
+      />
 
-      {/* 완료한 ToDp 리스트 */}
+      {/* 완료한 ToDo 리스트 */}
       <ToDoList />
     </div>
   );
