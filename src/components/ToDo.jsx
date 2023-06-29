@@ -33,6 +33,17 @@ const ToDo = ({ todo, todoList, setTodoList }) => {
     setEdited(false); 
   };
 
+  const onClickDeleteButton = () => {
+    if (window.confirm('지울 겅미?')) {
+      const nextTodoList = todoList.map((item) => ({
+        ...item,
+        deleted: item.id === todo.id ? true : item.deleted,
+      }));
+
+      setTodoList(nextTodoList);
+    }
+  };
+
   useEffect(() => {
     if (edited) {
       editInputRef.current.focus();
@@ -92,7 +103,11 @@ const ToDo = ({ todo, todoList, setTodoList }) => {
       ) : null
     }
     {/* 삭제 버튼 */}
-    <button type="button" className="todoapp__item-delete-btn">
+    <button
+      type="button"
+      className="todoapp__item-delete-btn"
+      onClick={onClickDeleteButton}
+    >
       🗑
     </button>
   </li>
